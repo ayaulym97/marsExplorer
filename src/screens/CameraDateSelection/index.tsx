@@ -40,6 +40,7 @@ const CameraDateSelection = () => {
     }
   };
   const handleChange = (type: string, value: any) => {
+    setErrors({});
     if (type === 'picker') {
       dispatch(setValue('camera', value));
     } else {
@@ -58,16 +59,15 @@ const CameraDateSelection = () => {
       setErrors({});
       loadPhotos;
     } catch (error) {
-      console.error(error.message);
       const validationErrors = {};
       error.inner.forEach(e => {
         validationErrors[e.path] = e.message;
       });
 
-      
       setErrors(validationErrors);
     }
   };
+  console.log('ERR', errors);
   return (
     <Block backgroundColor={colors.background}>
       <View style={styles.container}>
@@ -79,7 +79,7 @@ const CameraDateSelection = () => {
             type="picker"
             label="Rover Camera"
             value={camera}
-            errors={errors}
+            errors={errors.camera}
             onChangeText={value => handleChange('picker', value)}
           />
           <CustomInput
@@ -87,7 +87,7 @@ const CameraDateSelection = () => {
             label="Date"
             value={date}
             style={styles.datePicker}
-            errors={errors}
+            errors={errors.date}
             onChangeText={value => handleChange('datePicker', value)}
           />
           <TouchableOpacity
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   roverImg: {
     width: width,
-    height: height * 0.4,
+    height: height * 0.3,
   },
   flexBox: {
     flex: 1.5,

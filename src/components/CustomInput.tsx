@@ -31,11 +31,11 @@ const CustomInput: React.FC<Props> = ({
     switch (type) {
       case 'picker':
         return (
-          <>
+          <View>
             <RNPickerSelect
               value={value}
               onValueChange={(value: string) => onChangeText(value)}
-              style={pickerSelectStyles}
+              style={pickerSelectStyles(errors==="Please select an rover camera")}
               placeholder={{
                 label: 'Select rover camera',
                 value: null,
@@ -52,24 +52,20 @@ const CustomInput: React.FC<Props> = ({
                 />
               )}
             />
-            {errors && errors.selectedDate && (
-              <Text style={styles.errorText}>{errors.camera}</Text>
-            )}
-          </>
+          </View>
         );
       case 'datePicker':
         const selectedDate = moment(value).format('DD MMM YYYY');
         return (
           <View>
             <TouchableOpacity
-              style={styles.picker}
+              style={[styles.picker, {borderColor: errors && 'red'}]}
               onPress={() => setOpen(true)}>
               <Text style={styles.dateTxt}>
                 {value ? selectedDate : 'Select Date'}
               </Text>
               <CalendarIcon />
             </TouchableOpacity>
-
             <DatePicker
               modal
               open={open}
@@ -90,6 +86,7 @@ const CustomInput: React.FC<Props> = ({
     <View style={[styles.container, style]}>
       <Text style={styles.label}>{label}</Text>
       {setInput()}
+      {errors && <Text style={styles.errorText}>{errors}</Text>}
     </View>
   );
 };
@@ -133,32 +130,35 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    marginBottom: 10,
+    marginTop: 10,
   },
 });
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    height: 60,
-    fontSize: scale(18),
-    color: colors.black,
-    fontFamily: 'Dosis-Regular',
-    backgroundColor: colors.white,
-    borderRadius: scale(9),
-    marginTop: scale(7),
-    paddingHorizontal: scale(16),
-    paddingRight: 30,
-  },
-  inputAndroid: {
-    height: 60,
-    fontSize: scale(18),
-    color: colors.black,
-    fontFamily: 'Dosis-Regular',
-    backgroundColor: colors.white,
-    borderRadius: scale(9),
-    marginTop: scale(7),
-    paddingHorizontal: scale(16),
-  },
-});
+const pickerSelectStyles = (error: boolean) =>
+  StyleSheet.create({
+    inputIOS: {
+      height: 60,
+      fontSize: scale(18),
+      color: colors.black,
+      fontFamily: 'Dosis-Regular',
+      backgroundColor: colors.white,
+      borderRadius: scale(9),
+      marginTop: scale(7),
+      paddingHorizontal: scale(16),
+      paddingRight: 30,
+      borderColor: error && 'red',
+    },
+    inputAndroid: {
+      height: 60,
+      fontSize: scale(18),
+      color: colors.black,
+      fontFamily: 'Dosis-Regular',
+      backgroundColor: colors.white,
+      borderRadius: scale(9),
+      marginTop: scale(7),
+      paddingHorizontal: scale(16),
+      borderColor: error && 'red',
+    },
+  });
 
 export default CustomInput;
