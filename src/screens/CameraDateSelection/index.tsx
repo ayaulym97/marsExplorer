@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
     marginTop: scale(16),
   },
   exploreBtn: {
-    width: '95%',
-    marginHorizontal: '2.5%',
+    width: '90%',
+    marginHorizontal: '5%',
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
