@@ -36,7 +36,7 @@ const CameraDateSelection = () => {
       const photos = response.data.photos;
       dispatch(setPhotos(photos));
       dispatch(setValue('loading', false));
-      setLoading(false)
+      setLoading(false);
       navigation.navigate('MarsPhotosList');
     } catch (error) {
       setLoading(false);
@@ -104,10 +104,13 @@ const CameraDateSelection = () => {
             )}
           </TouchableOpacity>
         </View>
-        <Image
-          source={require('../../assets/image/rover.png')}
-          style={styles.roverImg}
-        />
+        <View style={{flex: 1}}>
+          <Image
+            source={require('../../assets/image/rover.png')}
+            style={styles.roverImg}
+            resizeMode='stretch'
+          />
+        </View>
       </View>
       <FlashMessage
         position={'bottom'}
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
   },
   roverImg: {
     width: width,
-    height: height * 0.3,
+    height: height*0.3
   },
   flexBox: {
     flex: 1.5,
