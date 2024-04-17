@@ -14,21 +14,11 @@ import RNFetchBlob from 'rn-fetch-blob';
 const {height} = Dimensions.get('screen');
 const MarsPhotoDetails = () => {
   const navigation = useNavigation();
-  const data = useSelector((state: any) => state);
-  var {selectedId, selectedLink} = data;
+  const selectedId = useSelector((state: any) => state.selectedId);
+  const selectedLink = useSelector((state: any) => state.selectedLink);
+
   const goBack = () => {
     navigation.goBack();
-  };
-  const shareLink = async () => {
-    try {
-      const options = {
-        message: 'Check out this link:',
-        url: selectedLink,
-      };
-      await Share.open(options);
-    } catch (error) {
-      console.error('Error sharing:', error.message);
-    }
   };
   const dwFile = () => {
     let imagePath = null;

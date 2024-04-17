@@ -22,21 +22,24 @@ const {width, height} = Dimensions.get('screen');
 const CameraDateSelection = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector((state: any) => state);
-  var {camera, date, loading} = data;
+  const camera = useSelector((state: any) => state.camera);
+  const date = useSelector((state: any) => state.date);
+  //const loading = useSelector((state: any) => state.loading);
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const loadPhotos = async () => {
-    dispatch(setValue('loading', true));
+    setLoading(true);
     const formattedDate = moment(date).format('YYYY-MM-DD');
     try {
       const response = await getPhotos(camera, formattedDate);
       const photos = response.data.photos;
       dispatch(setPhotos(photos));
       dispatch(setValue('loading', false));
+      setLoading(false)
       navigation.navigate('MarsPhotosList');
     } catch (error) {
-      dispatch(setValue('loading', false));
+      setLoading(false);
     }
   };
   const handleChange = (type: string, value: any) => {
@@ -57,7 +60,7 @@ const CameraDateSelection = () => {
       // Validation successful
       console.log('Validation successful');
       setErrors({});
-      loadPhotos;
+      loadPhotos();
     } catch (error) {
       const validationErrors = {};
       error.inner.forEach(e => {

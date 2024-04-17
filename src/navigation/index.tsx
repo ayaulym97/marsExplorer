@@ -7,12 +7,14 @@ import {
   MarsPhotoDetails,
 } from '../screens';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator();
 
 export const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Navigator
+        initialRouteName="CameraDateSelection"
+        screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="CameraDateSelection"
           component={CameraDateSelection}
@@ -22,10 +24,4 @@ export const Navigation = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-
-export type RootStackParamList = {
-  CameraDateSelection: undefined;
-  MarsPhotosList: undefined;
-  MarsPhotoDetails: undefined;
 };

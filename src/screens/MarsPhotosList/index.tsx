@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {scale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
@@ -12,8 +12,9 @@ import {setValue} from 'store/action';
 const MarsPhotosList = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector((state: any) => state);
-  var {camera, date} = data;
+  const camera = useSelector((state: any) => state.camera);
+  const date = useSelector((state: any) => state.date);
+  const data = useSelector((state: any) => state.data);
   const handleLeftPress = () => {
     navigation.goBack();
   };
@@ -24,6 +25,11 @@ const MarsPhotosList = () => {
     dispatch(setValue('selectedLink', updatedLink));
     navigation.navigate('MarsPhotoDetails');
   };
+  const renderEmptyList = () => (
+    <View style={styles.empty}>
+      <Text>Photos not found</Text>
+    </View>
+  );
   return (
     <Block backgroundColor={colors.background}>
       <CustomHeader
@@ -33,10 +39,10 @@ const MarsPhotosList = () => {
       />
       <FlatList
         style={styles.list}
-        data={data.data}
+        data={data}
         numColumns={3}
         columnWrapperStyle={{
-          justifyContent: data.data.length < 3 ? 'flex-start' : 'center',
+          justifyContent: data.length < 3 ? 'flex-start' : 'center',
         }}
         keyExtractor={(item, index) => item.id}
         renderItem={({item}) => (
@@ -46,6 +52,7 @@ const MarsPhotosList = () => {
             onPress={() => handlePhoto(item)}
           />
         )}
+        ListEmptyComponent={renderEmptyList}
       />
     </Block>
   );
@@ -54,4 +61,9 @@ const MarsPhotosList = () => {
 export default MarsPhotosList;
 const styles = StyleSheet.create({
   list: {marginTop: scale(16), paddingHorizontal: scale(8)},
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

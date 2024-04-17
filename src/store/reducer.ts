@@ -11,7 +11,7 @@ interface State {
 }
 
 const initialState: State = {
-  camera: null,
+  camera: 'fhaz',
   date: new Date(),
   data: null,
   loading: false,
@@ -28,15 +28,20 @@ const dataReducer = (state = initialState, action: any): State => {
         data: action.payload,
       };
     case SET_VALUE:
-      const serializedDate = state.date.toISOString();
-      var payload = action.payload;
       if (action.name === 'date') {
-        payload = serializedDate;
+        // If the action targets the 'date' field, serialize the date value
+        const serializedDate = action.payload.toISOString();
+        return {
+          ...state,
+          [action.name]: serializedDate,
+        };
+      } else {
+        // For other fields, directly update the state without serialization
+        return {
+          ...state,
+          [action.name]: action.payload,
+        };
       }
-      return {
-        ...state,
-        [action.name]: payload,
-      };
     default:
       return state;
   }
